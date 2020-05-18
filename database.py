@@ -3,7 +3,7 @@ from mysql.connector import connect
 sql = '''CREATE TABLE IF NOT EXISTS garden.Flower(
     id integer PRIMARY KEY AUTO_INCREMENT,
     name text NOT NULL, 
-    image_url text NOT NULL); '''
+    file_path text NOT NULL); '''
 
 conn = connect(user = "root", host = "localhost")
 
