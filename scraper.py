@@ -41,7 +41,8 @@ def dl_data(letter):
 
 conn = connect(
     database = "garden",
-    user = "root", 
+    user = "gardenAdmin",
+    password="new_password", 
     host = "localhost")
 
 c = conn.cursor()

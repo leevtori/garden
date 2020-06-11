@@ -5,7 +5,7 @@ sql = '''CREATE TABLE IF NOT EXISTS garden.Flower(
     name text NOT NULL, 
     file_path text NOT NULL); '''
 
-conn = connect(user = "root", host = "localhost")
+conn = connect(user = "root", password = "password", host = "localhost",auth_plugin='mysql_native_password')
 
 c = conn.cursor()
 try:
