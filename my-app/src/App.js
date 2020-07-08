@@ -37,27 +37,40 @@ class App extends Component {
   render() {
     // const {error, items} = this.state;
     const error = this.state.error;
-    // const items = this.state.items;
+    const items = this.state.items;
     if (error){
       return <div>Error: {error.message} </div>
-    } else {
+    } if (items.length === 0) {
       return (
         <div>
-          <h6> flower names </h6>
-          <ul>
-            {this.state.items[200][1]} hi
-
-
-            {/* {items[0]} */}
-            {/* {items.map(item => {
-              <li key={item[0]}>
-                {item[1]}
-              </li>
-            })} */}
-          </ul>
+        <h6> flower names </h6>
+        <ul>
+        </ul>
   
-        </div>
+      </div>
       )
+    }
+    else {
+    return (
+      <div>
+        <h6> flower names </h6>
+        <ul>
+          {/* all
+          {this.state.items}
+          one
+          {this.state.items[0][1]} hi
+          {this.state.items[0][2]} */}
+          
+          {items.map(item => (
+            <li key={item[0]}>
+              {item[1]}
+            </li>
+          ))}
+        </ul> 
+
+      </div>
+    )
+
     }
   }
 }
