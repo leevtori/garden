@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const mysql = require('@mysql/xdevapi')
-// const mysql = require('mysql');
 
 const config = {
     password:   'new_password',

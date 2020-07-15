@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 // import logo from './logo.svg';
 import './App.css';
+import {NavLink, Switch, Route} from 'react-router-dom';
 // import parse from '@mysql/xdevapi/lib/DevAPI/Util/URIParser';
 // import { response } from 'express';
 
@@ -35,7 +36,7 @@ class App extends Component {
   }
 
   render() {
-    // const {error, items} = this.state;
+
     const error = this.state.error;
     const items = this.state.items;
     if (error){
@@ -52,47 +53,64 @@ class App extends Component {
     }
     else {
     return (
+      <div className='app'>
+      <Navigation/>
+      <Main/>
+      
       <div>
         <h6> flower names </h6>
-        <ul>
-          {/* all
-          {this.state.items}
-          one
-          {this.state.items[0][1]} hi
-          {this.state.items[0][2]} */}
-          
           {items.map(item => (
-            <li key={item[0]}>
-              {item[1]}
-            </li>
+            <div id={item[0]}>
+              <img src={process.env.PUBLIC_URL + '/images/' + item[1] + '.jpg'} alt={item[1]}/>
+              <h3 key={item[0]}>{item[1]}</h3>
+            </div>
           ))}
-        </ul> 
-
+      </div>
       </div>
     )
-
     }
   }
 }
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
+class Navigation extends Component {
+  render () {
+    return (
+  <nav>
+    <ul>
+      <li><NavLink to='/'>Home</NavLink></li>
+      <li><NavLink to='/game1'>Word Scramble Game</NavLink></li>
+      <li><NavLink to='/gam2'>Name the Flower Game</NavLink></li>
+    </ul>
+  </nav>
+);
+    }
+  }
 
+const Main = () => (
+  <Switch>
+    <Route path="/" component={Home}></Route>
+    <Route path="/game1" component={Scramble}></Route>
+    <Route path="/game2" component={PictureGuessing}></Route>
+  </Switch>
+);
+
+const Home = () => (
+  <div className="home">
+    <h1>Welcome to the Garden!</h1>
+    <p>Browse around, learn about some flowers and test your knowledge!</p>
+  </div>
+);
+
+const Scramble = () => (
+  <div className='game1'>
+    <h1>Word Scramble Game</h1>
+    <p> stuff blah blah</p>
+  </div>
+);
+
+const PictureGuessing = () => (
+  <div className="game2">
+    <h1>Name the Flower</h1>
+    <p>Blahblahblah</p>
+  </div>
+);
 export default App;
