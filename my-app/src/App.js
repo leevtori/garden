@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
 import {NavLink, Switch, Route} from 'react-router-dom';
+import PictureGuessing from './PictureGuess'
 
 class App extends Component {
   constructor(props) {
@@ -17,7 +18,6 @@ class App extends Component {
     fetch('/api/flower')
       .then(res => res.text())
       .then((body) => {
-        debugger;
         this.setState({
           items : JSON.parse(body)
         });
@@ -49,22 +49,15 @@ class App extends Component {
       )}
       /> */}
       <Route path="/" exact><Home items={this.state.items}/></Route>
-      <Route path="/game1" exact><Scramble/></Route>
-      <Route path="/game2" exact><PictureGuessing/></Route>
+      <Route path="/game1" exact><Scramble items={this.state.items}/></Route>
+      <Route path="/game2" exact><PictureGuessing items={this.state.items}/></Route>
     </Switch>
     </div>
     );  
   }
   }
 
-// const Main = () => (
-
-// );
-
 class Home extends Component { 
-  constructor(props){
-    super(props);
-  }
 
   render () {
     const error = this.props.error;
@@ -101,19 +94,5 @@ class Scramble extends Component {
     );
   }
 } 
-
-
-
-class PictureGuessing extends Component {
-  render () {
-    return (
-      <div className="game2">
-        <h1>Name the Flower</h1>
-        <p>Blahblahblah</p>
-      </div>
-    );
-  }
-} 
-
 
 export default App;
