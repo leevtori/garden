@@ -1,13 +1,5 @@
 import React, {Component} from 'react';
 
-function NumGenerator(max, number) {
-    const output = []
-    {[...Array(number)].map((e, i) => {
-        output.push(Math.floor(Math.random() * max))
-    })}
-    return output
-}
-
 class InputBar extends Component {
     constructor(props) {
         super(props);
@@ -34,7 +26,7 @@ class InputBar extends Component {
 }
 class ImageRow extends Component{
     render() {
-        const indexes = this.props.index
+        const indexes = this.props.indexes
         const items = this.props.items
         return (
             <div>
@@ -44,7 +36,7 @@ class ImageRow extends Component{
                         <p>{items[index][1]}</p>
                         <NameRow index={index}
                         items={items}
-                        answer={this.props.guessText}/>
+                        answer={this.props.answer}/>
                     </div>
                 ))}
             </div>
@@ -57,10 +49,11 @@ class NameRow extends Component {
         const index = this.props.index
         const items = this.props.items
         const answer = this.props.answer
+        const value = (answer === items[index][1])? answer : ''
 
         return (
-            <div key={items[this.props.index][1]}>
-                <input className="inputData" id={items[index][1]} type='text' value={answer === items[index][1]? answer : '' } readOnly/>                
+            <div key={items[index][1]}>
+                <input className="inputData" id={items[index][1]} type='text' value={value}readOnly/>                
             </div>
         )
     }
@@ -69,10 +62,10 @@ class NameRow extends Component {
 class TableData extends Component {
 
     render() {
-        const imageIndexes = this.props.imageIndexes
         return (
             <div>
-                <ImageRow index={imageIndexes}
+                <ImageRow indexes={this.props.indexes}
+                answer={this.props.guessText}
                 items={this.props.items}/>
             </div>
         );     
@@ -100,8 +93,6 @@ class PictureGuessing extends Component {
         if (this.props.items.length === 0){
             return <div></div>
         } else {
-            debugger;
-            const imageIndexes = NumGenerator(this.props.items.length, 4)
             return (
                 <div className="game2">
                     <h1>Name the Flower</h1>
@@ -111,7 +102,7 @@ class PictureGuessing extends Component {
                     onGuessTextChange={this.handleGuessTextChange}/>
                     <TableData
                     guessText={this.state.guessText}
-                    imageIndexes={imageIndexes}
+                    indexes={this.props.indexes}
                     items={this.props.items}/>
                 </div>
             );

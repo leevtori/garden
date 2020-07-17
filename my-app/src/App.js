@@ -3,6 +3,14 @@ import './App.css';
 import {NavLink, Switch, Route} from 'react-router-dom';
 import PictureGuessing from './PictureGuess'
 
+function NumGenerator(max, number) {
+  const output = []
+  {[...Array(number)].map((e, i) => {
+      output.push(Math.floor(Math.random() * max))
+  })}
+  return output
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -33,6 +41,8 @@ class App extends Component {
   }
 
   render() {
+    const imageIndexes = NumGenerator(201, 4)
+
     return (
     <div>
     <nav>
@@ -50,7 +60,7 @@ class App extends Component {
       /> */}
       <Route path="/" exact><Home items={this.state.items}/></Route>
       <Route path="/game1" exact><Scramble items={this.state.items}/></Route>
-      <Route path="/game2" exact><PictureGuessing items={this.state.items}/></Route>
+      <Route path="/game2" exact><PictureGuessing items={this.state.items} indexes={imageIndexes}/></Route>
     </Switch>
     </div>
     );  
