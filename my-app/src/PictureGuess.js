@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './Game2.css'
 
 class InputBar extends Component {
     constructor(props) {
@@ -22,23 +23,25 @@ class InputBar extends Component {
             </form>
         );
     }
-
 }
 class ImageRow extends Component{
     render() {
         const indexes = this.props.indexes
         const items = this.props.items
         return (
-            <div>
-                {indexes.map(index => (
-                    <div key={items[index][0]}>
+            <div className="row">
+            {indexes.map(index => (
+                <div className="column">
+                    <div id={items[index][0]} key={items[index][0]}>
                         <img src={process.env.PUBLIC_URL + '/images/' + items[index][1] + '.jpg'} alt={items[index[1]]}/> 
                         <p>{items[index][1]}</p>
+                        
                         <NameRow index={index}
                         items={items}
                         answer={this.props.answer}/>
                     </div>
-                ))}
+                </div>
+            ))}
             </div>
         )
     }
@@ -48,13 +51,13 @@ class NameRow extends Component {
     render () {
         const index = this.props.index
         const items = this.props.items
-        const answer = this.props.answer
-        const value = (answer === items[index][1])? answer : ''
+        const answer = this.props.answer.toLowerCase()
+        const rightAnswer = items[index][1].toLowerCase()
+        const value = (answer === rightAnswer)? rightAnswer : ''
+        const disabled = (value === '')? false : true
 
         return (
-            <div key={items[index][1]}>
-                <input className="inputData" id={items[index][1]} type='text' value={value}readOnly/>                
-            </div>
+            <input className="inputData" id={items[index][1]} type='text' value={value} disabled={disabled} readOnly/>                
         )
     }
 }
@@ -63,7 +66,7 @@ class TableData extends Component {
 
     render() {
         return (
-            <div>
+            <div className="table">
                 <ImageRow indexes={this.props.indexes}
                 answer={this.props.guessText}
                 items={this.props.items}/>
@@ -89,7 +92,6 @@ class PictureGuessing extends Component {
     }
   
     render () {
-
         if (this.props.items.length === 0){
             return <div></div>
         } else {
@@ -107,7 +109,6 @@ class PictureGuessing extends Component {
                 </div>
             );
         }
-
     }
   } 
 
