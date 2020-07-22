@@ -138,9 +138,10 @@ class Home extends Component {
             ))}
           </ul>
           <Pagination 
-            dataPerPage={this.state.currentPage}
+            dataPerPage={this.state.dataPerPage}
             totalData={items.length}
-            paginate={paginate}/>
+            paginate={paginate}
+            currentPage={this.state.currentPage}/>
         </div>
       </div>
     );
