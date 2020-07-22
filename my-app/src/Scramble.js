@@ -6,7 +6,7 @@ class TableRow extends Component {
         const data = this.props.data
 
         return (
-            <tr>
+            <tr id={data[0]}>
                 <td className="scrambledText">{data[2]}</td>
                 <AnswerCol answer={this.props.answer} data={data}/>
                 <td className='hint'>{data[1]}</td>
@@ -26,7 +26,6 @@ class AnswerCol extends Component {
             <td className="textAnswer" id={data[0]}>{value}</td>
         );
     }
-
 }
 
 class TableData extends Component{

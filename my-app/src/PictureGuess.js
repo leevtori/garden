@@ -31,8 +31,8 @@ class ImageRow extends Component{
         return (
             <div className="row">
             {indexes.map(index => (
-                <div className="column">
-                    <div id={items[index][0]} key={items[index][0]}>
+                <div className="column" key={items[index][0]}>
+                    <div id={items[index][0]}>
                         <img src={process.env.PUBLIC_URL + '/images/' + items[index][1] + '.jpg'} alt={items[index[1]]}/> 
                         <p>{items[index][1]}</p>
                         

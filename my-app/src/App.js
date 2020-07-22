@@ -3,12 +3,19 @@ import './App.css';
 import {NavLink, Switch, Route} from 'react-router-dom';
 import PictureGuessing from './PictureGuess'
 import Scramble from './Scramble'
+import Pagination from './Pagination'
 
 function NumGenerator(max, number) {
   const output = []
-  {[...Array(number)].map((e, i) => {
-      output.push(Math.floor(Math.random() * max))
-  })}
+  for (var i = 0; i < number; i++) {
+    const randInt = Math.floor(Math.random() * max)
+    if (output.includes(randInt)) {
+      i -= 1;
+    }
+    else {
+      output.push(randInt);
+    }
+  }
   return output
 }
 
@@ -79,10 +86,6 @@ class App extends Component {
     </nav>
 
     <Switch>
-      {/* <Route path="/" exact render={(props) => (
-        <Home {...props} isAuthed={true}/>
-      )}
-      /> */}
       <Route path="/" exact><Home items={this.state.items}/></Route>
       <Route path="/game1" exact><Scramble wordList={scrambledWords}/></Route>
       <Route path="/game2" exact><PictureGuessing items={this.state.items} indexes={imageIndexes}/></Route>
@@ -90,13 +93,27 @@ class App extends Component {
     </div>
     );  
   }
-  }
+}
 
 class Home extends Component { 
+  constructor(props){
+    super(props);
+    this.state = {
+      currentPage: 1,
+      dataPerPage: 9,
+    }
+  }
 
   render () {
     const error = this.props.error;
     const items = this.props.items;
+
+    const indexOfLastImg = this.state.currentPage * this.state.dataPerPage;
+    const indexOfFirstImg = indexOfLastImg - this.state.dataPerPage;
+    const currentImgs = items.slice(indexOfFirstImg, indexOfLastImg);
+
+    // change the page
+    const paginate = pageNumber => this.setState({currentPage: pageNumber});
 
     if (error){
       return <div>Error: {error.message} </div>
@@ -108,12 +125,23 @@ class Home extends Component {
       <div className='home'>
         <h1>Welcome to the Garden!</h1>
         <p>Browse around, learn about some flowers and test your knowledge!</p>
-        {/* {items.map(item => (
-          <div id={item[0]}>
-            <img src={process.env.PUBLIC_URL + '/images/' + item[1] + '.jpg'} alt={item[1]}/>
-            <h3 key={item[0]}>{item[1]}</h3>
-          </div>
-        ))} */}
+        <div className="catalogue">
+          <h2>Catalogue</h2>
+          <ul className="flex-container">
+            {currentImgs.map(item => (
+              <li key={item[0]} className="col-smx-6 col-lg-4 item">
+                <div className="item-wrapper">
+                  <img src={process.env.PUBLIC_URL + '/images/' + item[1] + '.jpg'} alt={item[1]}/>
+                  <h3 key={item[0]}>{item[1]}</h3>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <Pagination 
+            dataPerPage={this.state.currentPage}
+            totalData={items.length}
+            paginate={paginate}/>
+        </div>
       </div>
     );
   }}    
