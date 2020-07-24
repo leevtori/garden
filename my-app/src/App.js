@@ -74,7 +74,7 @@ class App extends Component {
   render() {
     const imageIndexes = NumGenerator(201, 4)
     const scrambledWords = scrambledList(this.state.items)
-    console.log(scrambledWords)
+
     return (
     <div>
     <nav>
