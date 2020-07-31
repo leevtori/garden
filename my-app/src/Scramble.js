@@ -25,7 +25,6 @@ class AnswerCol extends Component {
         const guessText = this.props.guessText.toLowerCase()
         const rightAnswer = item[1]
         const giveUp = this.props.giveUp
-        const onAddItem = this.props.onAddItem
 
         const value = (rightAnswer.toLowerCase() === guessText)?
             <span style={{color: 'green'}}>{guessText}</span> : 
@@ -95,10 +94,6 @@ class InputBar extends Component {
         this.props.onClickGiveUp(e.target.value);
         e.preventDefault();
         console.log("gave up")
-    }
-
-    handlePlay(e){
-        e.preventDefault();
     }
 
     submitForm(e) {
@@ -179,7 +174,6 @@ class Scramble extends Component {
     }
 
     render () {
-        debugger;
         if (this.props.wordList.length === undefined){
             return <div>here</div>
         } else {

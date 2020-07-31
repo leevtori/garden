@@ -86,7 +86,11 @@ p {
   flex-wrap: wrap;
   list-style-type: none;
 }
-
+.catalogue{
+  margin: auto;
+  width: 100%;
+  padding: 10px
+}
 /* .catalogue{
   background-color: lavenderblush;
   margin: auto;

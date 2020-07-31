@@ -11,6 +11,14 @@
     display: flex;
     clear: both;
   }
+  
+  .answer {
+    border-style: solid ;
+    height: 30px;
+    width: 50%;  
+    margin: 0 auto;
+
+  }
 /* 
   .tooltip {
     position: relative;

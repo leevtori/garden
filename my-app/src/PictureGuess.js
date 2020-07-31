@@ -28,6 +28,8 @@ class InputBar extends Component {
                     placeholder="Flower Name"
                     value={this.props.guessText}
                     onChange={this.handleGuessTextChange}
+                    onKeyPress={e =>{
+                        if (e.key === 'Enter') e.preventDefault();}}
                     />
                     <button onClick={this.handleGiveUpClick}>Give up?</button>
                 </form>
@@ -41,6 +43,8 @@ class InputBar extends Component {
                 placeholder="Flower Name"
                 value={this.props.guessText}
                 onChange={this.handleGuessTextChange}
+                onKeyPress={e =>{
+                    if (e.key === 'Enter') e.preventDefault();}}
                 />
                 <button>Play again!</button>
             </form>
@@ -61,7 +65,8 @@ class ImageRow extends Component{
                         
                         <NameRow index={index}
                         items={items}
-                        answer={this.props.answer}/>
+                        guessText={this.props.guessText}
+                        giveUp={this.props.giveUp}/>
                     </div>
                 </div>
             ))}
@@ -74,13 +79,21 @@ class NameRow extends Component {
     render () {
         const index = this.props.index
         const items = this.props.items
-        const answer = this.props.answer.toLowerCase()
-        const rightAnswer = items[index][1].toLowerCase()
-        const value = (answer === rightAnswer)? rightAnswer : ''
-        const disabled = (value === '')? false : true
+        const guessText = this.props.guessText.toLowerCase()
+        const rightAnswer = items[index][1]
+        const giveUp = this.props.giveUp
 
+        const value = (rightAnswer.toLowerCase() === guessText)?
+            <span style={{color: 'green'}}>{guessText}</span> : 
+            <span style={{display: 'none'}}>{guessText}</span>;
+
+        if (giveUp === true){
+            return (
+                <div className="answer" key={items[index][1]}><span style={{color: 'red'}}>{rightAnswer}</span></div>                
+            )
+        }
         return (
-            <input className="inputData" id={items[index][1]} type='text' value={value} disabled={disabled} readOnly/>                
+            <div className="answer" key={items[index][1]}>{value}</div>                
         )
     }
 }
@@ -91,8 +104,9 @@ class TableData extends Component {
         return (
             <div className="table">
                 <ImageRow indexes={this.props.indexes}
-                answer={this.props.guessText}
-                items={this.props.items}/>
+                guessText={this.props.guessText}
+                items={this.props.items}
+                giveUp={this.props.giveUp}/>
             </div>
         );     
     }
