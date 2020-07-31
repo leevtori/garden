@@ -11,18 +11,26 @@ class ScrambleCol extends Component {
 }
 
 class AnswerCol extends Component {
+    // constructor(props){
+    //     super(props);
+    //     this.handleAddItem = this.handleAddItem.bind(this);
+    // }
+    // handleAddItem(){
+    //     console.log("adding item in table data")
+    // }
+
     render(){
         debugger;
         const item = this.props.item
         const guessText = this.props.guessText.toLowerCase()
         const rightAnswer = item[1]
-
         const giveUp = this.props.giveUp
+        const onAddItem = this.props.onAddItem
 
         const value = (rightAnswer.toLowerCase() === guessText)?
-            <td><span style={{color: 'green'}}>{guessText}</span></td> :
-            '';
-
+            <span style={{color: 'green'}}>{guessText}</span> : 
+            <span style={{display: 'none'}}>{guessText}</span>;
+        
         if (giveUp === true) {
             return (
                 <td id={item[0]}><span style={{color: 'red'}}>{rightAnswer}</span></td>
@@ -32,14 +40,22 @@ class AnswerCol extends Component {
                 <td id={item[0]}>{value}</td>
             );
         }
-    }
+    } 
 }
 
 class TableData extends Component{
+    // constructor(props){
+    //     super(props);
+    //     this.handleAddItem = this.handleAddItem.bind(this);
+    // }
+    // handleAddItem(){
+    //     console.log("adding item in table data")
+    // }
+
     render() {
         debugger;
         const wordList = this.props.wordList
-
+        // const onAddItem = this.props.onAddItem
         return (
             <table>
                 <thead>
@@ -51,9 +67,9 @@ class TableData extends Component{
                 </thead>
                 <tbody>
                     {wordList.map(item => (
-                        <tr>
+                        <tr key={item[0]}>
                             <ScrambleCol item={item}/>
-                            <AnswerCol item={item} guessText={this.props.guessText} giveUp={this.props.giveUp}/>
+                            <AnswerCol item={item} guessText={this.props.guessText} giveUp={this.props.giveUp} inputList={this.props.inputList} onAddItem={this.props.onAddItem}/>
                             <td>{item[1]}</td>
                         </tr>
                     ))}
@@ -66,12 +82,13 @@ class TableData extends Component{
 class InputBar extends Component {
     constructor(props){
         super(props);
-        this.handleGuessTextChange = this.handleGuessTextChange.bind(this)
+        this.handleGuessTextChange = this.handleGuessTextChange.bind(this);
         this.handleGiveUpClick = this.handleGiveUpClick.bind(this);
     }
 
     handleGuessTextChange(e){
         this.props.onGuessTextChange(e.target.value);
+        e.preventDefault();
     }
 
     handleGiveUpClick(e){
@@ -80,18 +97,29 @@ class InputBar extends Component {
         console.log("gave up")
     }
 
+    handlePlay(e){
+        e.preventDefault();
+    }
+
+    submitForm(e) {
+        e.preventDefault();
+    };
+
     render() {
         debugger;
         const giveUp = this.props.giveUp
+
         if (giveUp === false){
             return (
-                <form>
+                <form onSubmit={this.submitForm}>
                     <p>Enter your guess here :</p>
                     <input id="inputData"
                     type='text'
                     placeholder="Flower Name"
                     value={this.props.guessText}
                     onChange={this.handleGuessTextChange}
+                    onKeyPress={e =>{
+                        if (e.key === 'Enter') e.preventDefault();}}
                     />        
                     <button onClick={this.handleGiveUpClick}>Give up?</button>
                 </form>
@@ -105,6 +133,8 @@ class InputBar extends Component {
                     placeholder="Flower Name"
                     value={this.props.guessText}
                     onChange={this.handleGuessTextChange}
+                    onKeyPress={e =>{
+                        if (e.key === 'Enter') e.preventDefault();}}
                     />        
                     <button>Play again!</button> :
                 </form>
@@ -118,10 +148,12 @@ class Scramble extends Component {
         super(props);
         this.state = {
             guessText:'',
-            giveUp: false
+            giveUp: false,
+            currentCell: 0
         };
         this.handleGuessTextChange = this.handleGuessTextChange.bind(this);
         this.handleGiveUpClick = this.handleGiveUpClick.bind(this);
+        this.handleAddItem = this.onAddItem.bind(this);
     }
 
     handleGuessTextChange(guessText){
@@ -133,6 +165,16 @@ class Scramble extends Component {
     handleGiveUpClick() {
         this.setState({
             giveUp: true
+        });
+    }
+    debugger;
+    onAddItem = (item) => {
+        this.setState(state => {
+            console.log("adding item")
+            const list = state.inputAnswers.concat(item);
+            return {
+                list
+            };
         });
     }
 
@@ -156,6 +198,8 @@ class Scramble extends Component {
                     wordList={this.props.wordList}
                     guessText={this.state.guessText}
                     giveUp={this.state.giveUp}
+                    inputList={this.state.inputAnswers}
+                    onAddItem={this.handleAddItem}
                     />
                 </div>
             );

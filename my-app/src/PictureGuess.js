@@ -5,12 +5,34 @@ class InputBar extends Component {
     constructor(props) {
         super(props);
         this.handleGuessTextChange = this.handleGuessTextChange.bind(this)
+        this.handleGiveUpClick = this.handleGiveUpClick.bind(this)
     }
     handleGuessTextChange(e){
         this.props.onGuessTextChange(e.target.value);
     }
 
+    handleGiveUpClick(e){
+        this.props.onClickGiveUp(e.target.value)
+        e.preventDefault();
+        console.log("gave up")
+    }
+
     render() {
+        const giveUp = this.props.giveUp
+        if (giveUp === false) {
+            return (
+                <form>
+                    <p>Enter your guess here :</p>
+                    <input id="inputData"
+                    type='text'
+                    placeholder="Flower Name"
+                    value={this.props.guessText}
+                    onChange={this.handleGuessTextChange}
+                    />
+                    <button onClick={this.handleGiveUpClick}>Give up?</button>
+                </form>
+            );
+        }
         return (
             <form>
                 <p>Enter your guess here :</p>
@@ -20,6 +42,7 @@ class InputBar extends Component {
                 value={this.props.guessText}
                 onChange={this.handleGuessTextChange}
                 />
+                <button>Play again!</button>
             </form>
         );
     }
@@ -79,15 +102,22 @@ class PictureGuessing extends Component {
     constructor(props){
       super(props);
       this.state = {
-        guessText: ''
+        guessText: '',
+        giveUp: false
       };
-
+      this.handleGiveUpClick = this.handleGiveUpClick.bind(this);
       this.handleGuessTextChange = this.handleGuessTextChange.bind(this);
     }
 
     handleGuessTextChange(guessText){
         this.setState({
             guessText: guessText
+        });
+    }
+
+    handleGiveUpClick(){
+        this.setState({
+            giveUp: true
         });
     }
   
@@ -101,11 +131,14 @@ class PictureGuessing extends Component {
                     <p>Can you identify these flowers?</p>
                     <InputBar 
                     guessText={this.state.guessText}
-                    onGuessTextChange={this.handleGuessTextChange}/>
+                    onGuessTextChange={this.handleGuessTextChange}
+                    giveUp={this.state.giveUp}
+                    onClickGiveUp={this.handleGiveUpClick}/>
                     <TableData
                     guessText={this.state.guessText}
                     indexes={this.props.indexes}
-                    items={this.props.items}/>
+                    items={this.props.items}
+                    giveUp={this.state.giveUp}/>
                 </div>
             );
         }
